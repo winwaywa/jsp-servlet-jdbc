@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.shop.model.UserModel;
+
 @WebServlet(urlPatterns = { "/home", "/login" })
 public class HomeController extends HttpServlet {
 
@@ -16,6 +18,9 @@ public class HomeController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		UserModel userModel = new UserModel();
+		userModel.setFullName("Nguyễn Văn Hiệp");
+		req.setAttribute("model", userModel);
 		RequestDispatcher rd = req.getRequestDispatcher("/views/web/home.jsp");
 		rd.forward(req, resp);
 	}

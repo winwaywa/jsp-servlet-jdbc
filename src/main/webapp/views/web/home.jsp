@@ -1,3 +1,4 @@
+<%@include file="/common/taglib.jsp"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -7,6 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-Home
+<h1>Home</h1>
+<p>${model.fullName}</p>
 </body>
 </html>
