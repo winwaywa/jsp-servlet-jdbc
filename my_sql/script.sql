@@ -61,5 +61,15 @@ create table comment(
     updatedBy varchar(255) null
 );
 
-alter table comments add constraint fk_comments_news foreign key (news_id) references news(id);
-alter table comments add constraint fk_comments_user foreign key (user_id) references user(id);
+alter table comment add constraint fk_comments_news foreign key (news_id) references news(id);
+alter table comment add constraint fk_comments_user foreign key (user_id) references user(id);
+
+
+
+
+insert into category(code, name) values('the-thao',"Thể thao");
+insert into category(code, name) values('chinh-tri',"Chinh Trị");
+
+
+insert into news(title,short_description,content,category_id) value("Tieu de 1", "Mo ta ngan 1","Noi dung 1", 1);
+insert into news(title,short_description,content,category_id) value("Tieu de 2", "Mo ta ngan 2","Noi dung 2", 1);
