@@ -5,15 +5,22 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.blog.dao.GenericDAO;
 import com.blog.mapper.RowMapper;
-import com.blog.model.NewsModel;
 
+/**
+ * Base logic JDBC (connect DB, select, insert, update, delete)
+ * 
+ * @author Hiep Nguyen
+ * @param <T>
+ */
 public class BaseDAO<T> implements GenericDAO<T> {
-	
+
 	public Connection getConnection() {
 		try {
 			String url = "jdbc:mysql://localhost:3306/shopDB";
@@ -27,8 +34,30 @@ public class BaseDAO<T> implements GenericDAO<T> {
 		}
 	}
 
+	private void setParameter(PreparedStatement statement, Object... parameters) {
+		try {
+			for (int i = 0; i < parameters.length; i++) {
+				int parameterIndex = i + 1;
+				Object parameter = parameters[i];
+				if (parameter instanceof Integer) {
+					statement.setInt(parameterIndex, (int) parameter);
+				} else if (parameter instanceof Long) {
+					statement.setLong(parameterIndex, (Long) parameter);
+				} else if (parameter instanceof Double) {
+					statement.setDouble(parameterIndex, (Double) parameter);
+				} else if (parameter instanceof String) {
+					statement.setString(parameterIndex, (String) parameter);
+				} else if (parameter instanceof Timestamp) {
+					statement.setTimestamp(parameterIndex, (Timestamp) parameter);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
-	public List<T> query(String sql, RowMapper<T> rowMapper, Object ...parameters) {
+	public List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
 		List<T> result = new ArrayList<>();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -64,21 +93,82 @@ public class BaseDAO<T> implements GenericDAO<T> {
 		return null;
 	}
 
-	private void setParameter(PreparedStatement statement, Object... parameters) {
+	@Override
+	public Long insert(String sql, Object... parameters) {
+		Long id = null;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
 		try {
-		for(int i = 0; i < parameters.length ; i++) {
-			int parameterIndex = i+1;
-			Object parameter = parameters[i];
-				if (parameter instanceof Integer) {
-					statement.setInt(parameterIndex, (int) parameter);
-				}else if (parameter instanceof Long) {
-					statement.setLong(parameterIndex, (Long) parameter);
-				}else if (parameter instanceof String) {
-					statement.setString(parameterIndex, (String) parameter);
-				}
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			setParameter(statement, parameters);
+			statement.executeUpdate();
+			resultSet = statement.getGeneratedKeys();
+			if (resultSet.next()) {
+				// return key of added row
+				id = resultSet.getLong(1);
 			}
+			connection.commit();
+			return id;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			try {
+				if (connection != null) {
+					connection.rollback();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			return null;
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException e) {
+				return null;
+			}
+		}
+
+	}
+
+	@Override
+	public void update(String sql, Object... parameters) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			statement = connection.prepareStatement(sql);
+			setParameter(statement, parameters);
+			statement.executeUpdate();
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				if (connection != null) {
+					connection.rollback();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+			}
 		}
 	}
+
 }

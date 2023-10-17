@@ -20,4 +20,11 @@ public class CategoryService implements ICategoryService{
 		return categoryDao.findAll();
 	}
 
+	@Override
+	public CategoryModel save(CategoryModel categoryModel) {
+		Long categoryId = categoryDao.save(categoryModel);
+		System.out.println(categoryId);
+		return null;
+	}
+
 }
