@@ -14,6 +14,10 @@ public class CategoryMapper implements RowMapper<CategoryModel>{
 			category.setId(resultSet.getLong("id"));
 			category.setName(resultSet.getString("name"));
 			category.setCode(resultSet.getString("code"));
+			category.setCreatedAt(resultSet.getTimestamp("createdAt"));
+			category.setCreatedBy(resultSet.getString("createdBy"));
+			category.setUpdatedAt(resultSet.getTimestamp("updatedAt"));
+			category.setUpdatedBy(resultSet.getString("updatedBy"));
 			return category;
 		} catch (SQLException e) {
 			return null;

@@ -1,10 +1,5 @@
 package com.blog.dao.impl;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import com.blog.dao.ICategoryDAO;
@@ -27,9 +22,33 @@ public class CategoryDAO extends BaseDAO<CategoryModel> implements ICategoryDAO 
 	}
 
 	@Override
+	public CategoryModel findOne(Long categoryId) {
+		String sql = "select * from category where id = ?";
+		List<CategoryModel> categories = query(sql, rowMapper, categoryId);
+		return !categories.isEmpty() ? categories.get(0) : null;
+	}
+
+	@Override
 	public Long save(CategoryModel categoryModel) {
-		String sql = "insert into category(code, name) values(?,?)";
-		return insert(sql, categoryModel.getCode(), categoryModel.getName());
+		String sql = "insert into category(code, name, createdAt, createdBy, updatedAt, updatedBy) values(?,?,?,?,?,?)";
+		return insert(sql, categoryModel.getCode(), categoryModel.getName(), categoryModel.getCreatedAt(),
+				categoryModel.getCreatedBy(), categoryModel.getUpdatedAt(), categoryModel.getUpdatedBy());
+	}
+
+	@Override
+	public boolean update(CategoryModel categoryModel) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("update category ");
+		sql.append("set code=?, name=?, updatedAt= ?, updatedBy = ? ");
+		sql.append("where id=?");
+		return update(sql.toString(), categoryModel.getCode(), categoryModel.getName(), categoryModel.getUpdatedAt(),
+				categoryModel.getUpdatedBy(), categoryModel.getId());
+	}
+
+	@Override
+	public boolean delete(long id) {
+		String sql = "delete from category where id = ?";
+		return delete(sql, id);
 	}
 
 }

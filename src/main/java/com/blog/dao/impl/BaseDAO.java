@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,7 +141,7 @@ public class BaseDAO<T> implements GenericDAO<T> {
 	}
 
 	@Override
-	public void update(String sql, Object... parameters) {
+	public boolean update(String sql, Object... parameters) {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		try {
@@ -150,6 +151,7 @@ public class BaseDAO<T> implements GenericDAO<T> {
 			setParameter(statement, parameters);
 			statement.executeUpdate();
 			connection.commit();
+			return true;
 		} catch (SQLException e) {
 			try {
 				if (connection != null) {
@@ -169,6 +171,41 @@ public class BaseDAO<T> implements GenericDAO<T> {
 			} catch (SQLException e) {
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean delete(String sql, long id) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		try {
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			statement = connection.prepareStatement(sql);
+			setParameter(statement, id);
+			statement.executeUpdate();
+			connection.commit();
+			return true;
+		} catch (SQLException e) {
+			try {
+				if (connection != null) {
+					connection.rollback();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return false;
 	}
 
 }

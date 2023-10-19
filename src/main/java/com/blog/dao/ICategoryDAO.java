@@ -5,7 +5,14 @@ import java.util.List;
 import com.blog.model.CategoryModel;
 
 public interface ICategoryDAO extends GenericDAO<CategoryModel> {
-	
+
 	List<CategoryModel> findAll();
+
+	CategoryModel findOne(Long categoryDAO);
+
 	Long save(CategoryModel categoryModel);
+
+	boolean update(CategoryModel categoryModel);
+	
+	boolean delete(long id);
 }

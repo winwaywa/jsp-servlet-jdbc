@@ -8,4 +8,6 @@ public interface ICategoryService {
 	
 	List<CategoryModel> findAll();
 	CategoryModel save(CategoryModel categoryModel);
+	CategoryModel update(CategoryModel categoryModel);
+	void delete(long[] ids);
 }
