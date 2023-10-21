@@ -5,15 +5,16 @@ import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class HttpUtil {
+// using package jackson.databind
+public class ApiToModelUtil {
 
 	private String value;
 
-	public HttpUtil(String value) {
+	public ApiToModelUtil(String value) {
 		this.value = value;
 	}
 	
-	public static HttpUtil convertToString(BufferedReader br) {
+	public static ApiToModelUtil convertToString(BufferedReader br) {
 		StringBuilder sb = new StringBuilder();
 		try {
 			String line;
@@ -23,12 +24,11 @@ public class HttpUtil {
 		} catch (IOException e) {
 		}
 
-		return new HttpUtil(sb.toString());
+		return new ApiToModelUtil(sb.toString());
 	}
 	
 	public <T> T bindToModel(Class<T> tClass) {
 		try {
-			// jackson.databind;
 			return new ObjectMapper().readValue(value, tClass);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

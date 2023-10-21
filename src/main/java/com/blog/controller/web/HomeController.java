@@ -30,8 +30,6 @@ public class HomeController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		List<CategoryModel> categoryModels = categoryService.findAll();
-		req.setAttribute("categoryModels", categoryModels);
 		
 		RequestDispatcher rd = req.getRequestDispatcher("/views/web/home.jsp");
 		rd.forward(req, resp);

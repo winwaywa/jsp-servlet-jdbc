@@ -58,7 +58,7 @@ public class BaseDAO<T> implements GenericDAO<T> {
 	}
 
 	@Override
-	public List<T> query(String sql, RowMapper<T> rowMapper, Object... parameters) {
+	public List<T> query(String sql, RowMapper<T> rowMapper, Object ...parameters) {
 		List<T> result = new ArrayList<>();
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
@@ -67,7 +67,6 @@ public class BaseDAO<T> implements GenericDAO<T> {
 		if (connection != null) {
 			try {
 				statement = connection.prepareStatement(sql);
-				setParameter(statement, parameters);
 				resultSet = statement.executeQuery();
 				while (resultSet.next()) {
 					result.add(rowMapper.mapRow(resultSet));
@@ -206,6 +205,46 @@ public class BaseDAO<T> implements GenericDAO<T> {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public int count(String sql) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		int count = 0;
+		try {
+			connection = getConnection();
+			connection.setAutoCommit(false);
+			statement = connection.prepareStatement(sql);
+			resultSet = statement.executeQuery();
+			if (resultSet.next()) {
+				count = resultSet.getInt(1);
+			}
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				if (connection != null) {
+					connection.rollback();
+				}
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			try {
+				if (connection != null) {
+					connection.close();
+				}
+				if (statement != null) {
+					statement.close();
+				}
+				if (resultSet != null) {
+					resultSet.close();
+				}
+			} catch (SQLException e) {
+			}
+		}
+		return count;
 	}
 
 }

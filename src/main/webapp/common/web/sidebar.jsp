@@ -12,10 +12,19 @@
 	</div>
 </div>
 <!-- Categories widget-->
-<div class="card mb-4">
-	<div class="card-header">Categories</div>
-	<div class="card-body">
-		<div class="row">
+<c:if test="${not empty categoryModels}">
+	<div class="card mb-4">
+		<div class="card-header">Categories</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-sm-6">
+					<ul class="list-unstyled mb-0">
+						<c:forEach items="${categoryModels}" var="category">
+							<li ><a href="/${category.code}">${category.name}</a></li>
+						</c:forEach>
+					</ul>
+				</div>
+				<!-- 
 			<div class="col-sm-6">
 				<ul class="list-unstyled mb-0">
 					<li><a href="#!">Web Design</a></li>
@@ -30,9 +39,12 @@
 					<li><a href="#!">Tutorials</a></li>
 				</ul>
 			</div>
+			 -->
+			</div>
 		</div>
 	</div>
-</div>
+</c:if>
+
 <!-- Side widget-->
 <div class="card mb-4">
 	<div class="card-header">Side Widget</div>

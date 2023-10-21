@@ -6,6 +6,7 @@ import com.blog.dao.ICategoryDAO;
 import com.blog.mapper.CategoryMapper;
 import com.blog.mapper.RowMapper;
 import com.blog.model.CategoryModel;
+import com.blog.paging.Pageble;
 
 public class CategoryDAO extends BaseDAO<CategoryModel> implements ICategoryDAO {
 
@@ -16,9 +17,17 @@ public class CategoryDAO extends BaseDAO<CategoryModel> implements ICategoryDAO 
 	}
 
 	@Override
-	public List<CategoryModel> findAll() {
-		String sql = "select * from category";
-		return query(sql, rowMapper);
+	public List<CategoryModel> findAll(Pageble pageble) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select * from category ");
+		if (pageble.getSorter().getSortName() != null && pageble.getSorter().getSortValue() != null) {
+			sql.append(
+					"order by " + pageble.getSorter().getSortName() + " " + pageble.getSorter().getSortValue() + " ");
+		}
+		if (pageble.getOffset() != null && pageble.getLimit() != null) {
+			sql.append("limit " + pageble.getOffset() + "," + pageble.getLimit());
+		}
+		return query(sql.toString(), rowMapper);
 	}
 
 	@Override
@@ -49,6 +58,12 @@ public class CategoryDAO extends BaseDAO<CategoryModel> implements ICategoryDAO 
 	public boolean delete(long id) {
 		String sql = "delete from category where id = ?";
 		return delete(sql, id);
+	}
+
+	@Override
+	public int count() {
+		String sql = "select count(*) from category";
+		return count(sql);
 	}
 
 }

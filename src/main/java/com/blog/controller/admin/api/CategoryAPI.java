@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.blog.model.CategoryModel;
 import com.blog.service.impl.CategoryService;
-import com.blog.utils.HttpUtil;
+import com.blog.utils.ApiToModelUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet(urlPatterns = { "/api-admin-category" })
@@ -27,7 +27,7 @@ public class CategoryAPI extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
-		CategoryModel categoryModel = HttpUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
+		CategoryModel categoryModel = ApiToModelUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
 		CategoryModel categoryNew = categoryService.save(categoryModel);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(resp.getOutputStream(), categoryNew);
@@ -37,7 +37,7 @@ public class CategoryAPI extends HttpServlet {
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
-		CategoryModel categoryModel = HttpUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
+		CategoryModel categoryModel = ApiToModelUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
 		CategoryModel categoryNew = categoryService.update(categoryModel);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(resp.getOutputStream(), categoryNew);
@@ -47,7 +47,7 @@ public class CategoryAPI extends HttpServlet {
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
-		CategoryModel categoryModel = HttpUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
+		CategoryModel categoryModel = ApiToModelUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
 		categoryService.delete(categoryModel.getIds());
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(resp.getOutputStream(), "{}");

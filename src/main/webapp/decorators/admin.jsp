@@ -25,6 +25,8 @@
 <!-- Custom styles for this template-->
 <link
 	href="<c:url value='/template/admin/css/sb-admin-2.min.css" rel="stylesheet'/>">
+<script
+	src="<c:url value='/template/admin/vendor/jquery/jquery.min.js'/>"></script>
 
 </head>
 
@@ -84,9 +86,6 @@
 
 	<!-- Bootstrap core JavaScript-->
 	<script
-		src="<c:url value='/template/admin/vendor/jquery/jquery.min.js'/>"></script>
-
-	<script
 		src="<c:url value='/template/admin/vendor/bootstrap/js/bootstrap.bundle.min.js'/>"></script>
 
 	<!-- Core plugin JavaScript-->
@@ -105,5 +104,10 @@
 		src="<c:url value='/template/admin/js/demo/chart-area-demo.js'/>"></script>
 	<script
 		src="<c:url value='/template/admin/js/demo/chart-pie-demo.js'/>"></script>
+
+
+	<script
+		src="<c:url value='/template/pagination/js/simple-bootstrap-paginator.js'/>"></script>
+
 </body>
 </html>

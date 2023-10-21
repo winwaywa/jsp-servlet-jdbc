@@ -1,6 +1,6 @@
 package com.blog.model;
 
-public class CategoryModel extends BaseModel {
+public class CategoryModel extends BaseModel<CategoryModel> {
 	private String name;
 	private String code;
 

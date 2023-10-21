@@ -1,6 +1,6 @@
 package com.blog.model;
 
-public class NewsModel extends BaseModel {
+public class NewsModel extends BaseModel<NewsModel> {
 
 	private String title;
 	private String thumbnail;

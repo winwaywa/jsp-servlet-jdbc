@@ -1,6 +1,6 @@
 package com.blog.model;
 
-public class RoleModel extends BaseModel{
+public class RoleModel extends BaseModel<RoleModel>{
 	private String name;
 	private String code;
 

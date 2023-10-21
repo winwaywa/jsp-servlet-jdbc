@@ -1,6 +1,6 @@
 package com.blog.model;
 
-public class CommentModel extends BaseModel {
+public class CommentModel extends BaseModel<CommentModel> {
 
 	private String content;
 	private long userId;

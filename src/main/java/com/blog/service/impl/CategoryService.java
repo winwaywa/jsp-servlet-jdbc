@@ -6,6 +6,7 @@ import java.util.List;
 import com.blog.dao.ICategoryDAO;
 import com.blog.dao.impl.CategoryDAO;
 import com.blog.model.CategoryModel;
+import com.blog.paging.Pageble;
 import com.blog.service.ICategoryService;
 
 public class CategoryService implements ICategoryService {
@@ -17,8 +18,8 @@ public class CategoryService implements ICategoryService {
 	}
 
 	@Override
-	public List<CategoryModel> findAll() {
-		return categoryDao.findAll();
+	public List<CategoryModel> findAll(Pageble pageble) {
+		return categoryDao.findAll(pageble);
 	}
 
 	@Override
@@ -46,5 +47,10 @@ public class CategoryService implements ICategoryService {
 			// find news by categoryId -> delete
 			categoryDao.delete(id);
 		}
+	}
+
+	@Override
+	public int getTotalItems() {
+		return categoryDao.count();
 	}
 }

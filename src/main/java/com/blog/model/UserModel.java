@@ -1,6 +1,6 @@
 package com.blog.model;
 
-public class UserModel extends BaseModel {
+public class UserModel extends BaseModel<UserModel> {
 	private String userName;
 	private String fullName;
 	private String passWord;
