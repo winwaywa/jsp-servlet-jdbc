@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import com.blog.dao.GenericDAO;
 import com.blog.mapper.RowMapper;
@@ -21,14 +21,21 @@ import com.blog.mapper.RowMapper;
  * @param <T>
  */
 public class BaseDAO<T> implements GenericDAO<T> {
-
+	
+	// load to /src/main/resources/db.properties
+	ResourceBundle resourceBundle = ResourceBundle.getBundle("db");
+	
 	public Connection getConnection() {
 		try {
-			String url = "jdbc:mysql://localhost:3306/shopDB";
-			String user = "root";
-			String password = "admin";
-			// load driver
-			Class.forName("com.mysql.jdbc.Driver");
+//			String url = "jdbc:mysql://localhost:3306/shopDB";
+//			String user = "root";
+//			String password = "admin";
+//			Class.forName("com.mysql.jdbc.Driver");
+			String url = resourceBundle.getString("url");
+			String user = resourceBundle.getString("user");
+			String password = resourceBundle.getString("password");
+			Class.forName(resourceBundle.getString("driverName"));
+			
 			return DriverManager.getConnection(url, user, password);
 		} catch (ClassNotFoundException | SQLException e) {
 			return null;
@@ -67,6 +74,7 @@ public class BaseDAO<T> implements GenericDAO<T> {
 		if (connection != null) {
 			try {
 				statement = connection.prepareStatement(sql);
+				setParameter(statement, parameters);
 				resultSet = statement.executeQuery();
 				while (resultSet.next()) {
 					result.add(rowMapper.mapRow(resultSet));

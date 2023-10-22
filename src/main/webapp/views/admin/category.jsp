@@ -10,23 +10,39 @@
 </head>
 <body>
 	<div class="container">
-		<table class="table">
+		<div class="d-flex justify-content-end pb-3">
+			<a href="<c:url value='admin-category?type=edit'/>" class="btn btn-success mr-2" data-toggle="tooltip" title="Add new category"><i class="fa fa-plus-square" aria-hidden="true"></i></a>
+			<button id="btnDelete" type="button" class="btn btn-danger" data-toggle="tooltip" title="Delete categories">
+				<i class="fa fa-trash" aria-hidden="true"></i>
+			</button>
+		</div>
+		<table class="table mb-5">
 			<thead>
 				<tr>
 					<th scope="col">#</th>
 					<th scope="col">Code</th>
 					<th scope="col">Name</th>
 					<th scope="col">Update At</th>
+					<th scope="col">Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:if test="${not empty model.dataList}">
-					<c:forEach items="${model.dataList}" var="category">
+					<c:forEach items="${model.dataList}" var="item">
 						<tr>
-							<th scope="row">${category.id}</th>
-							<td>${category.code}</td>
-							<td>${category.name}</td>
-							<td>${category.updatedAt}</td>
+							<th  class="align-bottom" scope="row">${item.id}</th>
+							<td  class="align-bottom">${item.code}</td>
+							<td  class="align-bottom">${item.name}</td>
+							<td  class="align-bottom">${item.updatedAt}</td>
+							<td>
+								<c:url var="editURL" value="/admin-category">
+									<c:param name="type" value="edit" />
+									<c:param name="id" value="${item.id}" />
+								</c:url>
+								<a href="${editURL}" class="btn btn-info" data-toggle="tooltip" title="Update category">
+								<i class="fas fa-edit"></i>
+								</a>
+							</td>
 						</tr>
 					</c:forEach>
 				</c:if>

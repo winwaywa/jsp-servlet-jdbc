@@ -73,3 +73,6 @@ insert into category(code, name) values('chinh-tri',"Chinh Trị");
 
 insert into news(title,short_description,content,category_id) value("Tieu de 1", "Mo ta ngan 1","Noi dung 1", 1);
 insert into news(title,short_description,content,category_id) value("Tieu de 2", "Mo ta ngan 2","Noi dung 2", 1);
+
+INSERT INTO `shopdb`.`user` (`id`, `username`, `password`, `fullname`, `status`, `role_id`) VALUES ('1', 'hiep', '123', 'Nguyen Vanw Hiep', '1', '1');
+INSERT INTO `shopdb`.`user` (`id`, `username`, `password`, `fullname`, `status`, `role_id`) VALUES ('2', 'noname', '123', 'No name', '1', '2');

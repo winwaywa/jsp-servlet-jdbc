@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.blog.model.CategoryModel;
+import com.blog.model.UserModel;
 import com.blog.service.impl.CategoryService;
 import com.blog.utils.ApiToModelUtil;
+import com.blog.utils.SessionUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebServlet(urlPatterns = { "/api-admin-category" })
@@ -28,6 +30,11 @@ public class CategoryAPI extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
 		CategoryModel categoryModel = ApiToModelUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
+
+		UserModel userModel = (UserModel) SessionUtil.getInstance().getValue(req, "USERMODEL");
+		categoryModel.setCreatedBy(userModel.getUserName());
+		categoryModel.setUpdatedBy(userModel.getUserName());
+
 		CategoryModel categoryNew = categoryService.save(categoryModel);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(resp.getOutputStream(), categoryNew);
@@ -37,7 +44,11 @@ public class CategoryAPI extends HttpServlet {
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		req.setCharacterEncoding("UTF-8");
 		resp.setContentType("application/json");
+		
 		CategoryModel categoryModel = ApiToModelUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
+		UserModel userModel = (UserModel) SessionUtil.getInstance().getValue(req, "USERMODEL");
+		categoryModel.setUpdatedBy(userModel.getUserName());
+		
 		CategoryModel categoryNew = categoryService.update(categoryModel);
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.writeValue(resp.getOutputStream(), categoryNew);

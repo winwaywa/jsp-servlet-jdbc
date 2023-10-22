@@ -6,8 +6,10 @@ import java.util.List;
 import com.blog.dao.ICategoryDAO;
 import com.blog.dao.impl.CategoryDAO;
 import com.blog.model.CategoryModel;
+import com.blog.model.UserModel;
 import com.blog.paging.Pageble;
 import com.blog.service.ICategoryService;
+import com.blog.utils.SessionUtil;
 
 public class CategoryService implements ICategoryService {
 
@@ -25,9 +27,7 @@ public class CategoryService implements ICategoryService {
 	@Override
 	public CategoryModel save(CategoryModel categoryModel) {
 		categoryModel.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		categoryModel.setCreatedBy("");
 		categoryModel.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		categoryModel.setUpdatedBy("");
 		Long categoryId = categoryDao.save(categoryModel);
 		return categoryDao.findOne(categoryId);
 	}
@@ -36,7 +36,6 @@ public class CategoryService implements ICategoryService {
 		CategoryModel categoryOld = categoryDao.findOne(categoryNew.getId());
 		if (categoryOld != null) {
 			categoryNew.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-			categoryNew.setUpdatedBy("");
 			categoryDao.update(categoryNew);
 		}
 		return categoryDao.findOne(categoryNew.getId());

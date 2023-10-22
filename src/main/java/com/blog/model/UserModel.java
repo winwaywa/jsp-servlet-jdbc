@@ -6,6 +6,7 @@ public class UserModel extends BaseModel<UserModel> {
 	private String passWord;
 	private int status;
 	private long roleId;
+	private RoleModel roleModel;
 
 	public String getUserName() {
 		return userName;
@@ -45,6 +46,14 @@ public class UserModel extends BaseModel<UserModel> {
 
 	public void setRoleId(long roleId) {
 		this.roleId = roleId;
+	}
+
+	public RoleModel getRoleModel() {
+		return roleModel;
+	}
+
+	public void setRoleModel(RoleModel roleModel) {
+		this.roleModel = roleModel;
 	}
 
 }
