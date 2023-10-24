@@ -6,10 +6,8 @@ import java.util.List;
 import com.blog.dao.ICategoryDAO;
 import com.blog.dao.impl.CategoryDAO;
 import com.blog.model.CategoryModel;
-import com.blog.model.UserModel;
 import com.blog.paging.Pageble;
 import com.blog.service.ICategoryService;
-import com.blog.utils.SessionUtil;
 
 public class CategoryService implements ICategoryService {
 
@@ -41,8 +39,8 @@ public class CategoryService implements ICategoryService {
 		return categoryDao.findOne(categoryNew.getId());
 	}
 
-	public void delete(long[] ids) {
-		for(long id:ids) {
+	public void delete(Long[] ids) {
+		for(Long id:ids) {
 			// find news by categoryId -> delete
 			categoryDao.delete(id);
 		}
@@ -51,5 +49,10 @@ public class CategoryService implements ICategoryService {
 	@Override
 	public int getTotalItems() {
 		return categoryDao.count();
+	}
+
+	@Override
+	public CategoryModel findOne(Long id) {
+		return categoryDao.findOne(id);
 	}
 }

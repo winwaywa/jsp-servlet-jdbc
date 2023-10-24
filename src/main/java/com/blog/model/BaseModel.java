@@ -5,26 +5,27 @@ import java.util.List;
 
 public class BaseModel<T> {
 
-	private long id;
+	private Long id;
 	private Timestamp createdAt;
 	private Timestamp updatedAt;
 	private String createdBy;
 	private String updatedBy;
 
-	private long[] ids;
+	private Long[] ids;
 	private List<T> dataList;
 	private Integer page = 1;
 	private Integer maxPageItem = 5;
 	private Integer totalPages;
 	private Integer totalItems;
 	private String sortName = "updatedAt";
-	private String sortValue = "asc";
+	private String sortValue = "desc";
+	private String type;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -60,11 +61,11 @@ public class BaseModel<T> {
 		this.updatedBy = updatedBy;
 	}
 
-	public long[] getIds() {
+	public Long[] getIds() {
 		return ids;
 	}
 
-	public void setIds(long[] ids) {
+	public void setIds(Long[] ids) {
 		this.ids = ids;
 	}
 
@@ -122,6 +123,14 @@ public class BaseModel<T> {
 
 	public void setSortValue(String sortValue) {
 		this.sortValue = sortValue;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

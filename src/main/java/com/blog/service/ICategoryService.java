@@ -14,8 +14,10 @@ public interface ICategoryService {
 
 	CategoryModel update(CategoryModel categoryModel);
 
-	void delete(long[] ids);
+	void delete(Long[] ids);
 
 	int getTotalItems();
+	
+	CategoryModel findOne(Long id);
 
 }

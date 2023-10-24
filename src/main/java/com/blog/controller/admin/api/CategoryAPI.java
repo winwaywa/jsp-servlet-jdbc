@@ -61,6 +61,6 @@ public class CategoryAPI extends HttpServlet {
 		CategoryModel categoryModel = ApiToModelUtil.convertToString(req.getReader()).bindToModel(CategoryModel.class);
 		categoryService.delete(categoryModel.getIds());
 		ObjectMapper mapper = new ObjectMapper();
-		mapper.writeValue(resp.getOutputStream(), "{}");
+		mapper.writeValue(resp.getOutputStream(), "{message:'success'}");
 	}
 }

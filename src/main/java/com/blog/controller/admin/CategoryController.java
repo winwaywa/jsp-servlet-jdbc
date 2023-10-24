@@ -1,6 +1,7 @@
 package com.blog.controller.admin;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +26,8 @@ public class CategoryController extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 4999638233993917508L;
 
+	ResourceBundle resourceBundle = ResourceBundle.getBundle("message");
+
 	private ICategoryService categoryService;
 
 	public CategoryController() {
@@ -33,17 +36,48 @@ public class CategoryController extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String view = "";
+
 		// bind parameter to model
 		CategoryModel model = ParameterToModelUtil.bindToModel(CategoryModel.class, req);
 
-		Pageble pageble = new PageRequest(model.getPage(), model.getMaxPageItem(),
-				new Sorter(model.getSortName(), model.getSortValue()));
-		model.setDataList(categoryService.findAll(pageble));
-		model.setTotalItems(categoryService.getTotalItems());
-		model.setTotalPages((int) Math.ceil((double) model.getTotalItems() / model.getMaxPageItem()));
+		if (model.getType().equals("list")) {
+			Pageble pageble = new PageRequest(model.getPage(), model.getMaxPageItem(),
+					new Sorter(model.getSortName(), model.getSortValue()));
+			model.setDataList(categoryService.findAll(pageble));
+			model.setTotalItems(categoryService.getTotalItems());
+			model.setTotalPages((int) Math.ceil((double) model.getTotalItems() / model.getMaxPageItem()));
+
+			view = "/views/admin/category/list.jsp";
+
+		} else if (model.getType().equals("edit")) {
+			if (model.getId() != null) {
+				model = categoryService.findOne(model.getId());
+			} else {
+				model = null;
+			}
+			view = "/views/admin/category/edit.jsp";
+
+		}
+		String message = req.getParameter("message");
+		String messageResponse = "";
+		String alert = "";
+		if (message != null) {
+			if (message.equals("insert_success") || message.equals("update_success") || message.equals("delete_success")
+					|| message.equals("insert_fail") || message.equals("update_fail") || message.equals("delete_fail")){
+				messageResponse = resourceBundle.getString(message);
+				if(message.equals("insert_success") || message.equals("update_success") || message.equals("delete_success")) {
+					alert = "success";
+				}else {
+					alert = "danger";
+				}
+			}
+		}
+		req.setAttribute("alert", alert);
+		req.setAttribute("message", messageResponse);
 
 		req.setAttribute("model", model);
-		RequestDispatcher rd = req.getRequestDispatcher("/views/admin/category.jsp");
+		RequestDispatcher rd = req.getRequestDispatcher(view);
 		rd.forward(req, resp);
 	}
 

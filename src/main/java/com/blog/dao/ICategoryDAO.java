@@ -9,7 +9,7 @@ public interface ICategoryDAO extends GenericDAO<CategoryModel> {
 
 	List<CategoryModel> findAll(Pageble pageble);
 
-	CategoryModel findOne(Long categoryDAO);
+	CategoryModel findOne(Long id);
 
 	Long save(CategoryModel categoryModel);
 

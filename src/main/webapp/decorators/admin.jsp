@@ -25,8 +25,10 @@
 <!-- Custom styles for this template-->
 <link
 	href="<c:url value='/template/admin/css/sb-admin-2.min.css" rel="stylesheet'/>">
+
 <script
 	src="<c:url value='/template/admin/vendor/jquery/jquery.min.js'/>"></script>
+<script src="<c:url value='/template/ckeditor/ckeditor.js'/>"></script>
 
 </head>
 
@@ -77,7 +79,8 @@
 					<div class="modal-footer">
 						<button class="btn btn-secondary" type="button"
 							data-dismiss="modal">Cancel</button>
-						<a class="btn btn-primary" href="<c:url value='logout?action=logout'/>">Logout</a>
+						<a class="btn btn-primary"
+							href="<c:url value='logout?action=logout'/>">Logout</a>
 					</div>
 				</div>
 			</div>
